@@ -8,10 +8,8 @@ from transformers import AutoModel, AutoProcessor, AutoTokenizer, PreTrainedToke
 
 CLIP_PATH = "google/siglip-so400m-patch14-384"
 VLM_PROMPT = "A descriptive caption for this image:\n"
-MODEL_PATH = "meta-llama/Meta-Llama-3.1-8B"
+MODEL_PATH = "unsloth/Meta-Llama-3.1-8B-bnb-4bit"
 CHECKPOINT_PATH = Path("ckpt")
-
-HF_TOKEN = os.environ.get("HF_TOKEN", None)
 
 class ImageAdapter(nn.Module):
     def __init__(self, input_features: int, output_features: int):
