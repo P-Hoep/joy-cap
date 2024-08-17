@@ -40,5 +40,5 @@ def process_images(directory, target_size=1024):
             print(f"Could not process {filename}: {e}")
 
 if __name__ == "__main__":
-    directory = "images"  # Replace with the path to your images directory
+    directory = "../content/images"  # Replace with the path to your images directory
     process_images(directory)

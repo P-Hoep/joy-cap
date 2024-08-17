@@ -5,6 +5,7 @@ import torch
 from huggingface_hub import InferenceClient
 from torch import nn
 from transformers import AutoModel, AutoProcessor, AutoTokenizer, PreTrainedTokenizer, PreTrainedTokenizerFast, AutoModelForCausalLM
+from tqdm import tqdm
 
 CLIP_PATH = "google/siglip-so400m-patch14-384"
 VLM_PROMPT = "A descriptive caption for this image:\n"
@@ -99,21 +100,25 @@ def stream_chat(input_image: Image.Image):
     return caption.strip()
 
 def process_images_in_directory(directory):
-    for filename in os.listdir(directory):
-        if filename.lower().endswith('.jpg'):
-            image_path = os.path.join(directory, filename)
-            output_path = os.path.join(directory, os.path.splitext(filename)[0] + '.txt')
+    # Define the list of supported image extensions
+    supported_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp')
+
+    # Get list of image files
+    image_files = [f for f in os.listdir(directory) if f.lower().endswith(supported_extensions)]
+
+    # Create tqdm progress bar
+    for filename in tqdm(image_files, desc="Processing images", unit="file"):
+        image_path = os.path.join(directory, filename)
+        output_path = os.path.join(directory, os.path.splitext(filename)[0] + '.txt')
+        
+        try:
+            with Image.open(image_path) as img:
+                caption = stream_chat(img)
             
-            print(f"Processing {filename}...")
-            try:
-                with Image.open(image_path) as img:
-                    caption = stream_chat(img)
-                
-                with open(output_path, 'w') as f:
-                    f.write(caption)
-                print(f"Caption saved to {output_path}")
-            except Exception as e:
-                print(f"Error processing {filename}: {str(e)}")
+            with open(output_path, 'w') as f:
+                f.write(caption)
+        except Exception as e:
+            print(f"Error processing {filename}: {str(e)}")
 
 if __name__ == "__main__":
     image_directory = "../content/images"
