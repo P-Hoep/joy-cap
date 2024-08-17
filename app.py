@@ -116,6 +116,6 @@ def process_images_in_directory(directory):
                 print(f"Error processing {filename}: {str(e)}")
 
 if __name__ == "__main__":
-    image_directory = "content/images"
+    image_directory = "../content/images"
     process_images_in_directory(image_directory)
     print("Processing complete.")
