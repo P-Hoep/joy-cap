@@ -9,7 +9,7 @@ from transformers import AutoModel, AutoProcessor, AutoTokenizer, PreTrainedToke
 CLIP_PATH = "google/siglip-so400m-patch14-384"
 VLM_PROMPT = "A descriptive caption for this image:\n"
 MODEL_PATH = "unsloth/Meta-Llama-3.1-8B-bnb-4bit"
-CHECKPOINT_PATH = Path("ckpt")
+CHECKPOINT_PATH = Path("/content/joy-cap/ckpt")
 
 class ImageAdapter(nn.Module):
     def __init__(self, input_features: int, output_features: int):
@@ -116,6 +116,6 @@ def process_images_in_directory(directory):
                 print(f"Error processing {filename}: {str(e)}")
 
 if __name__ == "__main__":
-    image_directory = "images"
+    image_directory = "content/images"
     process_images_in_directory(image_directory)
     print("Processing complete.")
